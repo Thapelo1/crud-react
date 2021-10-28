@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 
 
 
+
 const Read = () => {
 
     const [APIData, setAPIData] = useState([]);
@@ -22,7 +23,7 @@ const Read = () => {
         localStorage.setItem('ID', id);
         localStorage.setItem('First Name', firstName);
         localStorage.setItem('Last Name', lastName);
-        localStorage.setItem('Checkbox Value', checkbox)
+        localStorage.setItem('Checkbox Value', checkbox);
     };
 
     const getData = () => {
@@ -30,16 +31,20 @@ const Read = () => {
             .then((getData) => {
                 setAPIData(getData.data);
             });
-    }
+    };
 
-    const onDelete = (id) => {
-        axios.delete(`https://617ab890cb1efe001700ffe4.mockapi.io/fakeData/${id}`);
-        getData();
+    const onDelete = async (id) => {
+        await axios.delete(`https://617ab890cb1efe001700ffe4.mockapi.io/fakeData/${id}`);
+        await getData();
     };
 
 
     return (
         <div>
+            <Link to="/create">
+                <Button color='green'>Add new</Button>
+            </Link>
+
             <Table singleLine>
                 <Table.Header>
                     <Table.Row>
@@ -47,7 +52,6 @@ const Read = () => {
                         <Table.HeaderCell>Last Name</Table.HeaderCell>
                         <Table.HeaderCell>Checked</Table.HeaderCell>
                         <Table.HeaderCell>Update</Table.HeaderCell>
-
                     </Table.Row>
                 </Table.Header>
 
@@ -60,11 +64,10 @@ const Read = () => {
                                 <Table.Cell>{data.checkbox ? 'Checked' : 'Unchecked'}</Table.Cell>
                                     <Table.Cell>
                                         <Link to='/update'>
-                                            <Button color='green' onClick={() => setData(data)}>Update</Button>
+                                            <Button color='orange' onClick={() => setData(data)}>Update</Button>
                                         </Link>
                                         <Button color='red' onClick={() => onDelete(data.id)}>Delete</Button>
                                     </Table.Cell>
-
                             </Table.Row>
                         )})}
                 </Table.Body>
